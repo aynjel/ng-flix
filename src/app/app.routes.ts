@@ -3,24 +3,18 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'movies',
-    loadComponent: () =>
-      import('./pages/movies-list/movies-list').then((m) => m.MoviesList),
-  },
-  {
-    path: 'movies/:id',
-    loadComponent: () =>
-      import('./pages/movies-details/movies-details').then(
-        (m) => m.MoviesDetails
-      ),
+    loadChildren: () =>
+      import('./modules/movie/movie.routes').then((m) => m.routes),
   },
   {
     path: 'tv-shows',
-    loadComponent: () =>
-      import('./pages/tv-shows-list/tv-shows-list').then((m) => m.TvShowsList),
+    loadChildren: () =>
+      import('./modules/tv-show/tv-show.routes').then((m) => m.routes),
   },
   {
     path: 'genres',
-    loadComponent: () => import('./pages/genres/genres').then((m) => m.Genres),
+    loadChildren: () =>
+      import('./modules/genre/genre.routes').then((m) => m.routes),
   },
   {
     path: '',

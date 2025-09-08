@@ -1,0 +1,279 @@
+<!-- Loading State -->
+@if (isLoading()) {
+<div class="min-h-screen flex items-center justify-center">
+  <div class="loading loading-spinner loading-lg text-primary"></div>
+</div>
+}
+
+<!-- Error State -->
+@if (error() && !isLoading()) {
+<div class="min-h-screen flex items-center justify-center">
+  <div class="alert alert-error max-w-md">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>{{ error() }}</span>
+    <div>
+      <button class="btn btn-sm btn-outline btn-secondary" routerLink="/movies">
+        Back to Movies
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Movie Details Content -->
+@if (movieDetails() && !isLoading() && !error()) {
+<div class="min-h-screen bg-base-200">
+  <!-- Backdrop Hero Section -->
+  <div class="relative h-96 md:h-[500px] overflow-hidden">
+    <img
+      [src]="baseImageUrl + movieDetails()!.backdrop_path"
+      [alt]="movieDetails()!.title + ' backdrop'"
+      class="w-full h-full object-cover"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-base-200 via-transparent to-transparent"
+    ></div>
+
+    <!-- Back Button -->
+    <div class="absolute top-4 left-4">
+      <button class="btn btn-sm btn-primary btn-outline" routerLink="/movies">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        Back to Movies
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Poster -->
+      <div class="flex-shrink-0">
+        <div class="w-64 mx-auto lg:mx-0">
+          <img
+            [src]="posterImageUrl + movieDetails()!.poster_path"
+            [alt]="movieDetails()!.title + ' poster'"
+            class="w-full rounded-lg shadow-lg"
+          />
+        </div>
+      </div>
+
+      <!-- Movie Info -->
+      <div class="flex-1 space-y-6">
+        <!-- Title and Tagline -->
+        <div>
+          <h1 class="text-4xl font-bold text-base-content mb-2">
+            {{ movieDetails()!.title }}
+          </h1>
+          @if (movieDetails()!.original_title !== movieDetails()!.title) {
+          <p class="text-lg text-base-content/70 italic">
+            {{ movieDetails()!.original_title }}
+          </p>
+          } @if (movieDetails()!.tagline) {
+          <p class="text-lg text-primary font-medium mt-2">
+            "{{ movieDetails()!.tagline }}"
+          </p>
+          }
+        </div>
+
+        <!-- Rating and Status -->
+        <div class="flex flex-wrap gap-4 items-center">
+          <div class="badge badge-primary badge-lg">
+            ⭐ {{ movieDetails()!.vote_average }}/10
+          </div>
+          <div class="badge badge-secondary badge-lg">
+            👥 {{ movieDetails()!.vote_count }} votes
+          </div>
+          <div class="badge badge-accent badge-lg">
+            📅 {{ movieDetails()!.release_date | date }}
+          </div>
+          @if (movieDetails()!.adult) {
+          <div class="badge badge-error badge-lg">🔞 Adult</div>
+          }
+        </div>
+
+        <!-- Genres -->
+        @if (movieDetails()!.genres.length > 0) {
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Genres</h3>
+          <div class="flex flex-wrap gap-2">
+            @for (genre of movieDetails()!.genres; track genre.id) {
+            <span class="badge badge-outline">{{ genre.name }}</span>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Overview -->
+        @if (movieDetails()!.overview) {
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Overview</h3>
+          <p class="text-base-content/80 leading-relaxed">
+            {{ movieDetails()!.overview }}
+          </p>
+        </div>
+        }
+
+        <!-- Movie Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @if (movieDetails()!.runtime) {
+          <div class="stat bg-base-100 rounded-lg shadow">
+            <div class="stat-title">Runtime</div>
+            <div class="stat-value text-primary">
+              {{ formatRuntime(movieDetails()!.runtime) }}
+            </div>
+          </div>
+          } @if (movieDetails()!.budget > 0) {
+          <div class="stat bg-base-100 rounded-lg shadow">
+            <div class="stat-title">Budget</div>
+            <div class="stat-value text-secondary">
+              {{ formatCurrency(movieDetails()!.budget) }}
+            </div>
+          </div>
+          } @if (movieDetails()!.revenue > 0) {
+          <div class="stat bg-base-100 rounded-lg shadow">
+            <div class="stat-title">Revenue</div>
+            <div class="stat-value text-accent">
+              {{ formatCurrency(movieDetails()!.revenue) }}
+            </div>
+          </div>
+          }
+
+          <div class="stat bg-base-100 rounded-lg shadow">
+            <div class="stat-title">Status</div>
+            <div class="stat-value text-info">{{ movieDetails()!.status }}</div>
+          </div>
+        </div>
+
+        <!-- Production Info -->
+        @if (movieDetails()!.production_companies.length > 0) {
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Production Companies</h3>
+          <div class="flex flex-wrap gap-2">
+            @for (company of movieDetails()!.production_companies; track
+            company.id) {
+            <span class="badge badge-ghost">{{ company.name }}</span>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Countries and Languages -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @if (movieDetails()!.production_countries.length > 0) {
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Production Countries</h3>
+            <div class="flex flex-wrap gap-2">
+              @for (country of movieDetails()!.production_countries; track
+              country.iso_3166_1) {
+              <span class="badge badge-outline">{{ country.name }}</span>
+              }
+            </div>
+          </div>
+          } @if (movieDetails()!.spoken_languages.length > 0) {
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Languages</h3>
+            <div class="flex flex-wrap gap-2">
+              @for (language of movieDetails()!.spoken_languages; track
+              language.iso_639_1) {
+              <span class="badge badge-outline"
+                >{{ language.english_name }}</span
+              >
+              }
+            </div>
+          </div>
+          }
+        </div>
+
+        <!-- External Links -->
+        <div class="flex flex-wrap gap-4">
+          @if (movieDetails()!.homepage) {
+          <a
+            [href]="movieDetails()!.homepage"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary btn-outline"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
+            </svg>
+            Official Website
+          </a>
+          } @if (movieDetails()!.imdb_id) {
+          <a
+            [href]="'https://www.imdb.com/title/' + movieDetails()!.imdb_id"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary btn-outline"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M24 0H0v24h24V0zM12.5 3.5h-1v17h1v-17zm-2 0h-1v17h1v-17zm4 0h-1v17h1v-17z"
+              />
+            </svg>
+            IMDb
+          </a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Cast Section -->
+    @if (movieCredits() && movieCredits()!.cast.length > 0) {
+    <div class="container mx-auto px-4 py-8">
+      <app-cast-carousel
+        [cast]="getTopCast(20)"
+        [profileImageUrl]="profileImageUrl"
+      />
+    </div>
+    }
+
+    <!-- Videos/Trailers Section -->
+    @if (movieVideos() && getTrailers().length > 0) {
+    <div class="container mx-auto px-4 py-8">
+      <app-videos-carousel [videos]="getTrailers()" />
+    </div>
+    }
+  </div>
+</div>
+}

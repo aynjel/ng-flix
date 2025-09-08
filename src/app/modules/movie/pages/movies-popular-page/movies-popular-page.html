@@ -1,0 +1,102 @@
+<!-- Loading State -->
+@if (isLoading()) {
+<div class="min-h-screen flex items-center justify-center">
+  <div class="loading loading-spinner loading-lg text-primary"></div>
+</div>
+}
+
+<!-- Error State -->
+@if (error() && !isLoading()) {
+<div class="min-h-screen flex items-center justify-center">
+  <div class="alert alert-error max-w-md">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>{{ error() }}</span>
+  </div>
+</div>
+}
+
+<!-- Popular Movies Content -->
+@if (popularMovies() && !isLoading() && !error()) {
+<section id="movies-list" class="py-8 px-4">
+  <h2 class="text-3xl font-bold mb-6 text-center">Popular Movies</h2>
+  <ul
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
+  >
+    @for (movie of popularMovies(); track movie.id) {
+    <li class="w-full max-w-sm">
+      <div
+        class="card h-full bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300"
+      >
+        <figure class="h-64 overflow-hidden">
+          <img
+            [src]="posterImageUrl + movie.backdrop_path"
+            [alt]="movie.title"
+            class="object-cover w-full h-full"
+          />
+        </figure>
+        <div class="card-body">
+          <!-- Title & Original Title -->
+          <h3 class="card-title text-lg font-semibold truncate">
+            {{ movie.title }}
+          </h3>
+          <p class="text-sm text-gray-500 italic">{{ movie.original_title }}</p>
+
+          <!-- Release Date & Language -->
+          <div class="text-xs text-gray-400 flex justify-between mt-1">
+            <span>📅 {{ movie.release_date | date}}</span>
+            <span>🌐 {{ movie.original_language | uppercase }}</span>
+          </div>
+
+          <!-- Overview -->
+          <p class="text-sm mt-2 line-clamp-4">{{ movie.overview }}</p>
+
+          <!-- Genre Badges -->
+          <div class="mt-2 flex flex-wrap gap-2">
+            @for (genreId of movie.genre_ids; track genreId) {
+            <span class="badge badge-outline text-xs">
+              {{ getGenreName(genreId) }}
+            </span>
+            }
+          </div>
+
+          <!-- Ratings & Popularity -->
+          <div class="mt-4 flex justify-between items-center text-sm">
+            <span>⭐ {{ movie.vote_average }} / 10</span>
+            <span>👥 {{ movie.vote_count }}</span>
+          </div>
+
+          <!-- Adult & Video Flags -->
+          @if(movie.adult){
+          <div class="mt-2 text-xs text-red-500">🔞 Adult Content</div>
+          } @if(movie.video){
+          <div class="mt-2 text-xs text-blue-500">🎥 Video Available</div>
+          }
+
+          <!-- CTA -->
+          <div class="mt-4">
+            <button
+              class="btn btn-primary w-full"
+              [routerLink]="['/movies/details', movie.id]"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+</section>
+}

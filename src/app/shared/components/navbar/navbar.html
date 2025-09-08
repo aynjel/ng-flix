@@ -1,40 +1,95 @@
-<header class="bg-neutral-200">
-  <div class="container-fluid mx-auto pr-7">
-    <nav>
-      <div class="flex h-40 items-center justify-between">
-        <div
-          class="flex flex-1 items-center justify-center md:items-stretch md:justify-start"
-        >
-          <a class="flex flex-shrink-0 items-center mr-4" href="/">
-            <img
-              class="h-40 w-auto"
-              src="./logo/trans_bg.png"
-              alt="NgFlix Logo"
-            />
-            <!-- <span class="hidden md:block text-white text-2xl font-bold ml-2">
-            NgFlix
-          </span> -->
-          </a>
-          <div class="md:ml-auto my-auto">
-            <div class="flex space-x-3 text-black">
+<header
+  class="fixed top-0 left-0 w-full z-50 bg-neutral text-neutral-content shadow-md"
+>
+  <div class="container mx-auto px-4">
+    <nav class="navbar py-4">
+      <!-- Logo -->
+      <div class="flex items-center gap-4 me-5">
+        <a routerLink="/" class="flex items-center gap-2">
+          <img
+            src="./logo/original.png"
+            alt="NgFlix"
+            class="h-12 w-auto md:hidden"
+          />
+          <span class="hidden md:inline text-xl font-bold">NgFlix</span>
+        </a>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="flex gap-4">
+        <div class="dropdown">
+          <div
+            tabindex="0"
+            role="button"
+            class="btn btn-sm btn-ghost hover:ghost"
+            routerLink="/movies"
+            routerLinkActive="btn-active"
+          >
+            Movies
+          </div>
+          <ul
+            tabindex="0"
+            class="dropdown-content menu bg-base-200 rounded-box z-1 w-32 shadow-lg"
+          >
+            <li>
+              <a
+                routerLink="/movies"
+                routerLinkActive="btn-active"
+                class="btn btn-sm btn-ghost hover:bg-base-100"
+                >Popular</a
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/movies/top-rated"
+                routerLinkActive="btn-active"
+                class="btn btn-sm btn-ghost hover:bg-base-100"
+                >Top Rated</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="dropdown">
+          <div
+            tabindex="0"
+            role="button"
+            class="btn btn-sm btn-ghost hover:ghost"
+            routerLink="/tv-shows"
+            routerLinkActive="btn-active"
+          >
+            TV Shows
+          </div>
+          <ul
+            tabindex="0"
+            class="dropdown-content menu bg-base-200 rounded-box z-1 w-32 shadow-lg"
+          >
+            <li>
               <a
                 routerLink="/tv-shows"
-                routerLinkActive="text-white bg-gray-900"
-                class="hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                routerLinkActive="btn-active"
+                class="btn btn-sm btn-ghost hover:bg-base-100"
+                >Popular</a
               >
-                TV Shows
-              </a>
-
+            </li>
+            <li>
               <a
-                routerLink="/genres"
-                routerLinkActive="text-white bg-gray-900"
-                class="hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                routerLink="/tv-shows/top-rated"
+                routerLinkActive="btn-active"
+                class="btn btn-sm btn-ghost hover:bg-base-100"
+                >Top Rated</a
               >
-                Genre
-              </a>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
+
+        <!-- <a
+          routerLink="/genres"
+          routerLinkActive="btn-active"
+          class="btn btn-sm btn-ghost hover:ghost"
+        >
+          Genre
+        </a> -->
       </div>
     </nav>
   </div>
