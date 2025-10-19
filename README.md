@@ -1,59 +1,126 @@
-# NgFlix
+## NgFlix
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.3.
+NgFlix is an example Angular application (a small Netflix-like frontend) that demonstrates a modular project structure, routing, services, interceptors and reusable UI components. It was scaffolded with Angular CLI v20 and provides pages for movies, TV shows and genres, plus shared components such as a navbar and carousels.
 
-## Development server
+This README documents how to set up the project, run it locally, run tests, and how the source is organized so you (or contributors) can get started quickly.
 
-To start a local development server, run:
+### Table of contents
 
-```bash
-ng serve
+- Project status
+- Requirements
+- Quick start
+- Development
+- Testing
+- Project structure
+- Contributing
+- License & notes
+
+## Project status
+
+This is a frontend-only Angular app. It expects a TMDB-style API for movie and TV data (the code includes an API access interceptor and services that call out to an API). The repository contains unit tests for important components and services.
+
+## Requirements
+
+- Node.js (LTS) - tested with Node.js 18+. Use nvm or similar if you need multiple versions.
+- npm (comes with Node) or yarn/pnpm (if you prefer those package managers).
+- Angular CLI (optional globally): npm i -g @angular/cli@20
+
+Verify your environment:
+
+```powershell
+node -v
+npm -v
+ng --version # optional
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Quick start
 
-## Code scaffolding
+1. Install dependencies:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```powershell
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2. Run the development server (default: http://localhost:4200):
 
-```bash
-ng generate --help
+```powershell
+npm start
+# or
+ng serve --open
 ```
 
-## Building
+3. Open your browser at http://localhost:4200/ (the app will reload automatically when you change files).
 
-To build the project run:
+Notes:
 
-```bash
-ng build
+- If the app needs API access keys (e.g. TMDB), check the environment files in `src/environments` and set your key there or wire a proxy during development.
+
+## Development
+
+- Generate components/services using the Angular CLI to follow the project's conventions. Example:
+
+```powershell
+ng generate component shared/components/my-component
+ng generate service modules/movie/services/movies
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Routing is organized by feature modules under `src/app/modules` and registered in `app.routes.ts`.
 
-## Running unit tests
+- Common code (components, interceptors, models) live in `src/app/shared`.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Linting and formatting
 
-```bash
-ng test
+This project doesn't ship with a specific formatter/linter config by default - consider adding ESLint and Prettier if you want stricter checks.
+
+## Testing
+
+Run unit tests (Karma + Jasmine by default in Angular CLI projects):
+
+```powershell
+npm test
 ```
 
-## Running end-to-end tests
+Unit test files are colocated with components and services and use the `.spec.ts` suffix. There are example specs under `src/app` in each module.
 
-For end-to-end (e2e) testing, run:
+## Project structure
 
-```bash
-ng e2e
-```
+Key folders and files (top-level `src`):
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- `src/app/app.ts` - application bootstrap and root module wiring (entry points and top-level providers).
+- `src/app/app.routes.ts` - application routes.
+- `src/app/app.config.ts` - app-specific configuration values.
+- `src/app/modules/*` - feature modules: `movie`, `tv-show`, `genre`, each with routes, pages and services.
+- `src/app/shared/components` - reusable UI components (navbar, carousels, back-to-top, etc.).
+- `src/app/shared/interceptors` - HTTP interceptors (for API key injection or request/response handling).
+- `src/app/shared/models` - TypeScript models used across services and components.
+- `src/environments` - environment configuration (development vs production). Update these files with API keys or base URLs as needed.
 
-## Additional Resources
+Example notable files:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `src/app/modules/movie/services/movies-service.ts` - service that fetches movie lists and details.
+- `src/app/shared/interceptors/tmdb-api-access-interceptor.ts` - attaches API access params to outgoing requests.
+
+## Contributing
+
+If you'd like to contribute:
+
+1. Fork the repository.
+2. Create a branch for your changes: `git checkout -b feat/your-feature`.
+3. Run the app and tests locally.
+4. Open a pull request with a clear description and screenshots if applicable.
+
+Guidelines:
+
+- Keep commits small and focused.
+- Add or update unit tests for new behaviors when possible.
+
+## License & notes
+
+This repository doesn't include licensing information. Add a LICENSE file if you plan to make the project public or accept contributions.
+
+## Troubleshooting
+
+- If `npm start` fails, run `npm ci` (clean install) or delete `node_modules` and run `npm install` again.
+- For CORS or API routing issues during development, consider using an Angular CLI proxy or a local mock server.
+
+---
