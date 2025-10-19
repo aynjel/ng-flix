@@ -143,4 +143,8 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
     this.$ngUnsubscribe.next();
     this.$ngUnsubscribe.complete();
   }
+
+  onBackClick(): void {
+    window.history.back();
+  }
 }

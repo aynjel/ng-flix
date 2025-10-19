@@ -19,4 +19,9 @@ export const routes: Routes = [
     component: MoviesTopRatedPage,
     title: 'Top Rated Movies',
   },
+  {
+    path: 'top-rated/details/:id',
+    component: MoviesDetailsPage,
+    title: 'Top Rated Movie Details',
+  },
 ];

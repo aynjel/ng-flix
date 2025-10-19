@@ -19,4 +19,9 @@ export const routes: Routes = [
     component: TvShowsTopRatedPage,
     title: 'Top Rated TV Shows',
   },
+  {
+    path: 'top-rated/details/:id',
+    component: TvShowsDetailsPage,
+    title: 'Top Rated TV Show Details',
+  },
 ];

@@ -48,7 +48,10 @@
 
     <!-- Back Button -->
     <div class="absolute top-4 left-4">
-      <button class="btn btn-sm btn-primary btn-outline" routerLink="/movies">
+      <button
+        class="btn btn-sm btn-primary btn-outline"
+        (click)="onBackClick()"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-4 w-4"
@@ -63,7 +66,7 @@
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        Back to Movies
+        Back
       </button>
     </div>
   </div>

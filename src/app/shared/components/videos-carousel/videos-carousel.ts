@@ -31,8 +31,12 @@ export class VideosCarouselComponent implements OnInit {
   }
 
   private updateMaxIndex(): void {
-    const max = Math.max(0, this.videos.length - this.itemsPerView());
-    this.maxIndex.set(max);
+    // set limit when videos are more than 30
+    const totalVideos = Math.min(this.videos.length, 30);
+    const itemsPerView = this.itemsPerView();
+    const maxIndex =
+      totalVideos <= itemsPerView ? 0 : totalVideos - itemsPerView;
+    this.maxIndex.set(maxIndex);
   }
 
   private updateItemsPerView(): void {
