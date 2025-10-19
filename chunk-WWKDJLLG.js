@@ -1,0 +1,1 @@
+import{Oa as o,kb as s,lb as r,zb as a}from"./chunk-LMEPS2HG.js";var e=class n{static \u0275fac=function(t){return new(t||n)};static \u0275cmp=o({type:n,selectors:[["app-genres-page"]],decls:2,vars:0,template:function(t,i){t&1&&(s(0,"p"),a(1,"genres-page works!"),r())},encapsulation:2})};var f=[{path:"",component:e,title:" Genres"}];export{f as routes};
